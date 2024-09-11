@@ -1,124 +1,119 @@
-/* General Styles */
-body,
-html {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  height: 100%;
-  overflow: hidden;
-}
-
-/* Login Page */
-.login-page {
-  height: 100vh;
+/* Backgroundni och qora qilib, blur qo'shish */
+.login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("https://source.unsplash.com/1600x900/?nature,forest");
-  background-size: cover;
-  background-position: center;
-  backdrop-filter: blur(8px); /* Background blur effect */
-  animation: fadeIn 1.5s ease-in-out; /* Fade in animation */
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.871);
+  backdrop-filter: blur(15px); /* Blur effekti qo'shildi */
+  padding: 30px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
+/* Login box stilini yangilash */
 .login-box {
-  background-color: rgba(255, 255, 255, 0.85);
-  padding: 40px;
-  border-radius: 10px;
-  position: relative;
-  width: 400px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-  transform: translateY(-50px);
-  animation: slideIn 1s ease-out forwards;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  background-color: rgba(65, 65, 65, 0.684);
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.4);
+  width: 350px;
 }
 
 .login-title {
   text-align: center;
-  margin-bottom: 20px;
   font-size: 24px;
-  font-weight: bold;
+  margin-bottom: 20px;
+  color: aqua;
 }
 
 .input-field {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
+  margin: 12px 0;
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  outline: none;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
 }
 
 .submit-btn {
   width: 100%;
-  padding: 10px;
-  background-color: black;
+  padding: 12px;
+  background-color: aqua;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 16px;
   transition: background-color 0.3s ease;
 }
 
 .submit-btn:hover {
-  background-color: darkgray;
+  background-color: rgb(65, 223, 223);
 }
 
 .register-link {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
-.register-link a {
-  color: blue;
-}
-
-.register-link a:hover {
+.forgot-password {
+  color: #fff;
   text-decoration: underline;
 }
 
-/* Navbar Styles */
-.navbar {
-  background-color: #333;
+.forgot-password:hover {
+  color: #ccc;
+}
+
+/* Logout stilini o'zgartirish */
+.logout-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.logout-btn {
+  padding: 10px 20px;
+  background-color: #ff4d4d;
   color: white;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
-.navbar .logo {
-  font-size: 24px;
-  font-weight: bold;
+.logout-btn:hover {
+  background-color: #ff3333;
 }
 
-.navbar .nav-links {
-  display: flex;
-  gap: 20px;
-}
-
-.navbar .nav-links li {
-  list-style: none;
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
   cursor: pointer;
 }
 
-.navbar .nav-links li:hover {
-  color: lightgray;
+.close-btn:hover {
+  color: #ff3333;
 }

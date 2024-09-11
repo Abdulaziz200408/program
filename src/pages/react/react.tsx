@@ -6,10 +6,7 @@ import axios from "axios";
 import "highlight.js/styles/github.css";
 import "../../App.css";
 
-import { Controlled as CodeMirror } from "react-codemirror2";
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/javascript/javascript"; // Kod tili tanlang
-import "codemirror/theme/material.css"; // Temani tanlang
+import MonacoEditor from "@monaco-editor/react";
 
 interface SubmittedData {
   id: number;
@@ -126,7 +123,7 @@ function ReactPage() {
   };
 
   return (
-    <div>
+    <div className="background">
       <div
         style={{
           width: "100%",
@@ -160,25 +157,27 @@ function ReactPage() {
             icon={<FaPlus style={{ fontSize: "24px" }} />}
             onClick={showDrawer}
           />
-          <h2 style={{ fontWeight: "bold", margin: 0 }}>Ma'lumot qo'shish</h2>
+          <h2 style={{ fontWeight: "bold", margin: 0, color: "white" }}>
+            Ma'lumot qo'shish
+          </h2>
         </div>
 
         <div
           style={{
             padding: "10px",
-            width: "270px",
+            width: "600px",
             height: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             position: "relative",
-            marginLeft: "200px",
+            marginLeft: "250px",
           }}
         >
           <Input
             style={{
               borderRadius: "24px",
-              width: "300px",
+              width: "600px",
               height: "44px",
               backgroundColor: "#EDEFF3",
               border: "none",
@@ -198,7 +197,7 @@ function ReactPage() {
               right: "20px",
               transform: "translateY(-50%)",
               cursor: "pointer",
-              fontSize: "22px",
+              fontSize: "28px",
               color: "#8D9BA8",
             }}
           />
@@ -211,6 +210,7 @@ function ReactPage() {
           height: "80vh",
           overflowY: "auto",
           padding: "20px",
+          border: "none",
         }}
         className="data-container"
         ref={dataContainerRef}
@@ -243,10 +243,10 @@ function ReactPage() {
 
               <div
                 style={{
-                  border: "1px solid white",
                   borderRadius: "10px",
                   padding: "4px",
                   marginBottom: "20px",
+                  position: "relative",
                 }}
               >
                 {item.imgUrl && (
@@ -288,80 +288,58 @@ function ReactPage() {
         width={600}
         onClose={onClose}
         open={openDrawer}
-        extra={
-          <Button type="primary" onClick={onClose}>
-            Yopish
+        footer={
+          <Button key="submit" type="primary" onClick={handleSubmit}>
+            Yuborish
           </Button>
         }
       >
         <Form layout="vertical">
-          <Form.Item label="Name">
-            <Input
-              name="name"
-              placeholder="Nomi"
-              value={formData.name}
-              onChange={handleChange}
-            />
+          <Form.Item label="Nom">
+            <Input name="name" value={formData.name} onChange={handleChange} />
           </Form.Item>
-
-          <Form.Item label="Description">
+          <Form.Item label="Tavsif">
             <Input.TextArea
               name="description"
-              rows={4}
-              placeholder="Tavsif"
               value={formData.description}
               onChange={handleChange}
             />
           </Form.Item>
-
-          <Form.Item label="Image URL">
+          <Form.Item label="Rasm URL">
             <Input
               name="imgUrl"
-              placeholder="Rasm URL"
               value={formData.imgUrl}
               onChange={handleChange}
             />
           </Form.Item>
-
           <Form.Item label="Eslatma">
             <Input
               name="eslatma"
-              placeholder="Eslatma"
               value={formData.eslatma}
               onChange={handleChange}
             />
           </Form.Item>
-
-          <Form.Item label="Choose File">
+          <Form.Item label="Fayl tanlash">
             <Input type="file" onChange={handleFileChange} />
           </Form.Item>
-
           <Form.Item label="Eslatma Fayl">
             <Input
               name="eslatmaFayl"
-              placeholder="Eslatma Fayl"
               value={formData.eslatmaFayl}
               onChange={handleChange}
             />
           </Form.Item>
-
-          <Form.Item label="Code">
-            <CodeMirror
+          <Form.Item label="Kod">
+            <MonacoEditor
+              height="400px"
+              language="typescript" // Corrected language setting
               value={formData.kod}
-              options={{
-                mode: "javascript", // Kod tili tanlang
-                theme: "material", // Temani tanlang
-                lineNumbers: true,
-              }}
-              onBeforeChange={(editor, data, value) => {
-                setFormData((prevData) => ({ ...prevData, kod: value }));
-              }}
+              onChange={(value) =>
+                setFormData((prevData) => ({ ...prevData, kod: value || "" }))
+              }
+              options={{ fontSize: 16 }}
             />
           </Form.Item>
-
-          <Button type="primary" onClick={handleSubmit}>
-            Qo'shish
-          </Button>
         </Form>
       </Drawer>
     </div>

@@ -19,17 +19,42 @@
 
 .nav-links li {
   margin: 0 15px;
-  cursor: pointer;
 }
 
-.logout-btn {
-  background-color: red;
+.nav-links a {
   color: white;
-  padding: 5px 10px;
-  border: none;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px; /* Add rounded corners */
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.nav-links a:hover {
+  background-color: aqua;
+  transform: translateY(-5px); /* Lift the item on hover */
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.5); /* White shadow effect */
+}
+
+.nav-links .active {
+  background-color: aqua;
+  transform: translateY(-5px); /* Keep it lifted when active */
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.5); /* White shadow effect */
+  border-radius: 5px; /* Ensure the border-radius is applied */
+}
+
+.buttonhj {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border: none; /* Remove default border if any */
+  background: none; /* Ensure no background */
   cursor: pointer;
 }
 
-.logout-btn:hover {
-  background-color: darkred;
+.buttonhj img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 5px;
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.5); /* White shadow effect for the image */
 }

@@ -1,57 +1,157 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "../home/home.css"; // CSS fayl yo'lini tekshiring
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import "../home/home.css"; // Ensure the correct path to your CSS file
 
-const Home = () => {
+const Home: React.FC = () => {
+  const location = useLocation();
+  const [activeMenuItem, setActiveMenuItem] = useState<string>(
+    localStorage.getItem("activeMenu") || "/java"
+  );
+
+  useEffect(() => {
+    setActiveMenuItem(location.pathname);
+  }, [location]);
+
   const handleLogout = () => {
-    // Logout funksiyasi
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("name"); // Optionally remove name if desired
+    localStorage.removeItem("activeMenu"); // Remove active menu item on logout
     console.log("Logged out");
-    // Agar haqiqatan chiqish qilish kerak bo'lsa, qo'shimcha kod qo'shing
   };
+
+  const handleMenuClick = (path: string) => {
+    setActiveMenuItem(path);
+    localStorage.setItem("activeMenu", path);
+  };
+
+  const name = localStorage.getItem("name");
 
   return (
     <nav className="navbar">
       <div className="logo">Logo</div>
       <ul className="nav-links">
         <li>
-          <Link to="/java">Java</Link>
+          <Link
+            to="/java"
+            className={activeMenuItem === "/java" ? "active" : ""}
+            onClick={() => handleMenuClick("/java")}
+          >
+            Java
+          </Link>
         </li>
         <li>
-          <Link to="/cplus">C++</Link>
+          <Link
+            to="/cplus"
+            className={activeMenuItem === "/cplus" ? "active" : ""}
+            onClick={() => handleMenuClick("/cplus")}
+          >
+            C++
+          </Link>
         </li>
         <li>
-          <Link to="/html">HTML</Link>
+          <Link
+            to="/html"
+            className={activeMenuItem === "/html" ? "active" : ""}
+            onClick={() => handleMenuClick("/html")}
+          >
+            HTML
+          </Link>
         </li>
         <li>
-          <Link to="/css">CSS</Link>
+          <Link
+            to="/css"
+            className={activeMenuItem === "/css" ? "active" : ""}
+            onClick={() => handleMenuClick("/css")}
+          >
+            CSS
+          </Link>
         </li>
         <li>
-          <Link to="/scss">SCSS</Link> {/* Agar bu sahifa mavjud bo'lsa */}
+          <Link
+            to="/scss"
+            className={activeMenuItem === "/scss" ? "active" : ""}
+            onClick={() => handleMenuClick("/scss")}
+          >
+            SCSS
+          </Link>
         </li>
         <li>
-          <Link to="/bootstrap">Bootstrap</Link>
+          <Link
+            to="/bootstrap"
+            className={activeMenuItem === "/bootstrap" ? "active" : ""}
+            onClick={() => handleMenuClick("/bootstrap")}
+          >
+            Bootstrap
+          </Link>
         </li>
         <li>
-          <Link to="/tailwind">Tailwind</Link>
+          <Link
+            to="/tailwind"
+            className={activeMenuItem === "/tailwind" ? "active" : ""}
+            onClick={() => handleMenuClick("/tailwind")}
+          >
+            Tailwind
+          </Link>
         </li>
         <li>
-          <Link to="/chakra">Chakra</Link> {/* Agar bu sahifa mavjud bo'lsa */}
+          <Link
+            to="/chakra"
+            className={activeMenuItem === "/chakra" ? "active" : ""}
+            onClick={() => handleMenuClick("/chakra")}
+          >
+            Chakra
+          </Link>
         </li>
         <li>
-          <Link to="/mui">MUI</Link>
+          <Link
+            to="/mui"
+            className={activeMenuItem === "/mui" ? "active" : ""}
+            onClick={() => handleMenuClick("/mui")}
+          >
+            MUI
+          </Link>
         </li>
         <li>
-          <Link to="/react">React</Link>
+          <Link
+            to="/react"
+            className={activeMenuItem === "/react" ? "active" : ""}
+            onClick={() => handleMenuClick("/react")}
+          >
+            React
+          </Link>
         </li>
         <li>
-          <Link to="/nextjs">Next.js</Link>
+          <Link
+            to="/nextjs"
+            className={activeMenuItem === "/nextjs" ? "active" : ""}
+            onClick={() => handleMenuClick("/nextjs")}
+          >
+            Next.js
+          </Link>
         </li>
         <li>
-          <Link to="/vuejs">Vue.js</Link>
+          <Link
+            to="/vuejs"
+            className={activeMenuItem === "/vuejs" ? "active" : ""}
+            onClick={() => handleMenuClick("/vuejs")}
+          >
+            Vue.js
+          </Link>
         </li>
       </ul>
-      <button className="logout-btn" type="button" onClick={handleLogout}>
-        Logout
+      <button className="buttonhj" type="button" onClick={handleLogout}>
+        <img
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            marginLeft: "5px",
+          }}
+          src="https://wallpapers.com/images/hd/anime-boy-in-black-and-white-anime-pfp-sefsf1g02629xu37.jpg"
+          alt=""
+        />
+        {name}
       </button>
     </nav>
   );

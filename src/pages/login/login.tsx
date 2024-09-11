@@ -1,63 +1,58 @@
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import React, { useState, useEffect } from "react";
 import "./login.css";
-import Menu from "../home/home"; // Import yo'lini tekshiring
+import Menu from "../home/home"; // Ensure the path to Menu is correct
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const [name, setname] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Kirishni tekshirish uchun holat qo'shildi
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // LocalStorage'dan foydalanuvchi holatini tekshirish
-    const savedEmail = localStorage.getItem("email");
+    const savedname = localStorage.getItem("name");
     const savedPassword = localStorage.getItem("password");
-    if (savedEmail && savedPassword) {
+    if (savedname && savedPassword) {
       setIsLoggedIn(true);
     }
   }, []);
 
   const handleLogin = () => {
-    // Email va parolni to'g'ri tekshirish
-    if (email.length > 0 && password === "1234") {
-      localStorage.setItem("email", email); // Emailni localStorage'ga saqlash
-      localStorage.setItem("password", password); // Parolni localStorage'ga saqlash
-      setIsLoggedIn(true); // Kirishni amalga oshirganini belgilash
+    if (name.length > 0 && password === "1234") {
+      localStorage.setItem("name", name);
+      localStorage.setItem("password", password);
+      setIsLoggedIn(true);
     } else {
-      alert("Email yoki parol noto'g'ri"); // Hato xabari
+      toast.error("name yoki parol noto'g'ri", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("email"); // LocalStorage'dan emailni o'chirish
-    localStorage.removeItem("password"); // LocalStorage'dan parolni o'chirish
-    setEmail("");
-    setPassword("");
-    setIsLoggedIn(false); // Logout qilishda holatni yangilash
-  };
-
   return (
-    <div className="container ">
+    <div>
+      <ToastContainer />
       {isLoggedIn ? (
         <>
           <Menu />
-          <button className="logout-btn" type="button" onClick={handleLogout}>
-            Logout
-          </button>
         </>
       ) : (
         <div className="login-container">
           <div className="login-box">
-            <button className="close-btn" type="button">
-              X
-            </button>
             <h2 className="login-title">Login</h2>
 
             <input
-              type="email"
-              placeholder="Email"
+              type="name"
+              placeholder="name"
               className="input-field"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={name}
+              onChange={(e) => setname(e.target.value)}
             />
 
             <input
@@ -68,22 +63,16 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <div className="login-options">
-              <label>
-                <input type="checkbox" /> Remember me
-              </label>
-              <a href="#" className="forgot-password">
-                Forgot Password?
-              </a>
-            </div>
-
-            <button className="submit-btn" type="button" onClick={handleLogin}>
+            <button
+              style={{
+                marginTop: "10px",
+              }}
+              className="submit-btn"
+              type="button"
+              onClick={handleLogin}
+            >
               Login
             </button>
-
-            <div className="register-link">
-              Don't have an account? <a href="#">Register</a>
-            </div>
           </div>
         </div>
       )}
