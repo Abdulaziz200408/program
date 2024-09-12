@@ -3,17 +3,14 @@ import { Button, Input, Drawer, Form, message } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
 import axios from "axios";
-import "highlight.js/styles/github.css";
+import MonacoEditor from "@monaco-editor/react"; // Monaco Editor import
 import "../../App.css";
-
-import MonacoEditor from "@monaco-editor/react";
 
 interface SubmittedData {
   id: number;
   name?: string;
   description?: string;
   imgUrl?: string;
-  chooseFile?: string;
   kod?: string;
   eslatma?: string;
   eslatmaFayl?: string;
@@ -26,8 +23,6 @@ function ReactPage() {
     description: "",
     imgUrl: "",
     eslatma: "",
-    chooseFile: null as File | null,
-    eslatmaFayl: "",
     kod: "",
   });
 
@@ -50,11 +45,6 @@ function ReactPage() {
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setFormData((prevData) => ({ ...prevData, chooseFile: file }));
   };
 
   const fetchData = async (query: string = "") => {
@@ -91,16 +81,9 @@ function ReactPage() {
 
   const handleSubmit = async () => {
     try {
-      const formDataWithFileUrl = {
-        ...formData,
-        chooseFile: formData.chooseFile
-          ? URL.createObjectURL(formData.chooseFile)
-          : "",
-      };
-
       const response = await axios.post<SubmittedData>(
         "https://c0adcbfd27d5ecc2.mokky.dev/react",
-        formDataWithFileUrl
+        formData
       );
 
       setFilteredData((prevData) => [...prevData, response.data]);
@@ -111,8 +94,6 @@ function ReactPage() {
         description: "",
         imgUrl: "",
         eslatma: "",
-        chooseFile: null,
-        eslatmaFayl: "",
         kod: "",
       });
       message.success("Ma'lumot muvaffaqiyatli qo'shildi!");
@@ -123,13 +104,22 @@ function ReactPage() {
   };
 
   return (
-    <div className="background">
+    <div
+      style={{
+        backgroundColor: "#0e1212",
+        color: "white",
+      }}
+    >
       <div
         style={{
           width: "100%",
           height: "60px",
           display: "flex",
           alignItems: "center",
+          color: "#fff",
+          backgroundColor: "rgb(0, 57, 63)",
+          paddingBottom: "20px",
+          paddingTop: "10px", // Corrected background color
         }}
       >
         <div
@@ -144,28 +134,17 @@ function ReactPage() {
           }}
         >
           <Button
-            style={{
-              borderRadius: "50%",
-              backgroundColor: "#20D472",
-              color: "white",
-              width: "40px",
-              height: "40px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            icon={<FaPlus style={{ fontSize: "24px" }} />}
+            className="add-button"
+            icon={<FaPlus style={{ fontSize: "20px" }} />}
             onClick={showDrawer}
           />
-          <h2 style={{ fontWeight: "bold", margin: 0, color: "white" }}>
-            Ma'lumot qo'shish
-          </h2>
+          <h2 style={{ fontWeight: "bold", margin: 0 }}>Ma'lumot qo'shish</h2>
         </div>
 
         <div
           style={{
             padding: "10px",
-            width: "600px",
+            width: "670px",
             height: "100%",
             display: "flex",
             alignItems: "center",
@@ -177,7 +156,7 @@ function ReactPage() {
           <Input
             style={{
               borderRadius: "24px",
-              width: "600px",
+              width: "500px",
               height: "44px",
               backgroundColor: "#EDEFF3",
               border: "none",
@@ -194,10 +173,10 @@ function ReactPage() {
             style={{
               position: "absolute",
               top: "50%",
-              right: "20px",
+              right: "180px",
               transform: "translateY(-50%)",
               cursor: "pointer",
-              fontSize: "28px",
+              fontSize: "22px",
               color: "#8D9BA8",
             }}
           />
@@ -207,10 +186,10 @@ function ReactPage() {
       <div
         style={{
           width: "100%",
-          height: "80vh",
+          height: "83.2vh",
           overflowY: "auto",
           padding: "20px",
-          border: "none",
+          marginTop: "10px",
         }}
         className="data-container"
         ref={dataContainerRef}
@@ -246,7 +225,6 @@ function ReactPage() {
                   borderRadius: "10px",
                   padding: "4px",
                   marginBottom: "20px",
-                  position: "relative",
                 }}
               >
                 {item.imgUrl && (
@@ -259,13 +237,6 @@ function ReactPage() {
                   </p>
                 )}
               </div>
-              {item.chooseFile && (
-                <img
-                  src={item.chooseFile}
-                  alt="Choose file"
-                  className="data-file-image"
-                />
-              )}
               {item.eslatmaFayl && (
                 <p className="data-eslatmaFayl">
                   <span className="spands">Eslatma Fayl : </span>
@@ -288,56 +259,60 @@ function ReactPage() {
         width={600}
         onClose={onClose}
         open={openDrawer}
-        footer={
-          <Button key="submit" type="primary" onClick={handleSubmit}>
-            Yuborish
+        extra={
+          <Button type="primary" onClick={handleSubmit}>
+            Codni qo'shish
           </Button>
         }
       >
         <Form layout="vertical">
-          <Form.Item label="Nom">
-            <Input name="name" value={formData.name} onChange={handleChange} />
+          <Form.Item label="Name">
+            <Input
+              name="name"
+              placeholder="Nomi"
+              value={formData.name}
+              onChange={handleChange}
+            />
           </Form.Item>
-          <Form.Item label="Tavsif">
+
+          <Form.Item label="Description">
             <Input.TextArea
               name="description"
+              rows={4}
+              placeholder="Tavsif"
               value={formData.description}
               onChange={handleChange}
             />
           </Form.Item>
-          <Form.Item label="Rasm URL">
+
+          <Form.Item label="Image URL">
             <Input
               name="imgUrl"
+              placeholder="Rasm URL"
               value={formData.imgUrl}
               onChange={handleChange}
             />
           </Form.Item>
+
           <Form.Item label="Eslatma">
-            <Input
+            <Input.TextArea
               name="eslatma"
+              rows={4}
+              placeholder="Eslatma"
               value={formData.eslatma}
               onChange={handleChange}
             />
           </Form.Item>
-          <Form.Item label="Fayl tanlash">
-            <Input type="file" onChange={handleFileChange} />
-          </Form.Item>
-          <Form.Item label="Eslatma Fayl">
-            <Input
-              name="eslatmaFayl"
-              value={formData.eslatmaFayl}
-              onChange={handleChange}
-            />
-          </Form.Item>
+
           <Form.Item label="Kod">
             <MonacoEditor
-              height="400px"
-              language="typescript" // Corrected language setting
+              height="200px"
+              language="javascript"
               value={formData.kod}
               onChange={(value) =>
                 setFormData((prevData) => ({ ...prevData, kod: value || "" }))
               }
-              options={{ fontSize: 16 }}
+              options={{ theme: "vs-dark", minimap: { enabled: false } }}
             />
           </Form.Item>
         </Form>

@@ -45,7 +45,7 @@ function Login() {
       ) : (
         <div className="login-container">
           <div className="login-box">
-            <h2 className="login-title">Login</h2>
+            <h2 className="login-title">Notepad code LOgin</h2>
 
             <input
               type="name"

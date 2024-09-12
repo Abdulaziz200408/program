@@ -3,20 +3,14 @@ import { Button, Input, Drawer, Form, message } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
 import axios from "axios";
-import "highlight.js/styles/github.css";
+import MonacoEditor from "@monaco-editor/react"; // Monaco Editor import
 import "../../App.css";
-
-import { Controlled as CodeMirror } from "react-codemirror2";
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/javascript/javascript"; // Kod tili tanlang
-import "codemirror/theme/material.css"; // Temani tanlang
 
 interface SubmittedData {
   id: number;
   name?: string;
   description?: string;
   imgUrl?: string;
-  chooseFile?: string;
   kod?: string;
   eslatma?: string;
   eslatmaFayl?: string;
@@ -29,8 +23,6 @@ function Mui() {
     description: "",
     imgUrl: "",
     eslatma: "",
-    chooseFile: null as File | null,
-    eslatmaFayl: "",
     kod: "",
   });
 
@@ -53,11 +45,6 @@ function Mui() {
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setFormData((prevData) => ({ ...prevData, chooseFile: file }));
   };
 
   const fetchData = async (query: string = "") => {
@@ -94,16 +81,9 @@ function Mui() {
 
   const handleSubmit = async () => {
     try {
-      const formDataWithFileUrl = {
-        ...formData,
-        chooseFile: formData.chooseFile
-          ? URL.createObjectURL(formData.chooseFile)
-          : "",
-      };
-
       const response = await axios.post<SubmittedData>(
         "https://c0adcbfd27d5ecc2.mokky.dev/mui",
-        formDataWithFileUrl
+        formData
       );
 
       setFilteredData((prevData) => [...prevData, response.data]);
@@ -114,8 +94,6 @@ function Mui() {
         description: "",
         imgUrl: "",
         eslatma: "",
-        chooseFile: null,
-        eslatmaFayl: "",
         kod: "",
       });
       message.success("Ma'lumot muvaffaqiyatli qo'shildi!");
@@ -126,13 +104,22 @@ function Mui() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: "#0e1212",
+        color: "white",
+      }}
+    >
       <div
         style={{
           width: "100%",
           height: "60px",
           display: "flex",
           alignItems: "center",
+          color: "#fff",
+          backgroundColor: "rgb(0, 57, 63)",
+          paddingBottom: "20px",
+          paddingTop: "10px", // Corrected background color
         }}
       >
         <div
@@ -147,17 +134,8 @@ function Mui() {
           }}
         >
           <Button
-            style={{
-              borderRadius: "50%",
-              backgroundColor: "#20D472",
-              color: "white",
-              width: "40px",
-              height: "40px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            icon={<FaPlus style={{ fontSize: "24px" }} />}
+            className="add-button"
+            icon={<FaPlus style={{ fontSize: "20px" }} />}
             onClick={showDrawer}
           />
           <h2 style={{ fontWeight: "bold", margin: 0 }}>Ma'lumot qo'shish</h2>
@@ -166,19 +144,19 @@ function Mui() {
         <div
           style={{
             padding: "10px",
-            width: "270px",
+            width: "670px",
             height: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             position: "relative",
-            marginLeft: "200px",
+            marginLeft: "250px",
           }}
         >
           <Input
             style={{
               borderRadius: "24px",
-              width: "300px",
+              width: "500px",
               height: "44px",
               backgroundColor: "#EDEFF3",
               border: "none",
@@ -195,7 +173,7 @@ function Mui() {
             style={{
               position: "absolute",
               top: "50%",
-              right: "20px",
+              right: "180px",
               transform: "translateY(-50%)",
               cursor: "pointer",
               fontSize: "22px",
@@ -208,9 +186,10 @@ function Mui() {
       <div
         style={{
           width: "100%",
-          height: "80vh",
+          height: "83.2vh",
           overflowY: "auto",
           padding: "20px",
+          marginTop: "10px",
         }}
         className="data-container"
         ref={dataContainerRef}
@@ -243,7 +222,6 @@ function Mui() {
 
               <div
                 style={{
-                  border: "1px solid white",
                   borderRadius: "10px",
                   padding: "4px",
                   marginBottom: "20px",
@@ -259,13 +237,6 @@ function Mui() {
                   </p>
                 )}
               </div>
-              {item.chooseFile && (
-                <img
-                  src={item.chooseFile}
-                  alt="Choose file"
-                  className="data-file-image"
-                />
-              )}
               {item.eslatmaFayl && (
                 <p className="data-eslatmaFayl">
                   <span className="spands">Eslatma Fayl : </span>
@@ -289,8 +260,8 @@ function Mui() {
         onClose={onClose}
         open={openDrawer}
         extra={
-          <Button type="primary" onClick={onClose}>
-            Yopish
+          <Button type="primary" onClick={handleSubmit}>
+            Codni qo'shish
           </Button>
         }
       >
@@ -324,44 +295,26 @@ function Mui() {
           </Form.Item>
 
           <Form.Item label="Eslatma">
-            <Input
+            <Input.TextArea
               name="eslatma"
+              rows={4}
               placeholder="Eslatma"
               value={formData.eslatma}
               onChange={handleChange}
             />
           </Form.Item>
 
-          <Form.Item label="Choose File">
-            <Input type="file" onChange={handleFileChange} />
-          </Form.Item>
-
-          <Form.Item label="Eslatma Fayl">
-            <Input
-              name="eslatmaFayl"
-              placeholder="Eslatma Fayl"
-              value={formData.eslatmaFayl}
-              onChange={handleChange}
-            />
-          </Form.Item>
-
-          <Form.Item label="Code">
-            <CodeMirror
+          <Form.Item label="Kod">
+            <MonacoEditor
+              height="200px"
+              language="javascript"
               value={formData.kod}
-              options={{
-                mode: "javascript", // Kod tili tanlang
-                theme: "material", // Temani tanlang
-                lineNumbers: true,
-              }}
-              onBeforeChange={(editor, data, value) => {
-                setFormData((prevData) => ({ ...prevData, kod: value }));
-              }}
+              onChange={(value) =>
+                setFormData((prevData) => ({ ...prevData, kod: value || "" }))
+              }
+              options={{ theme: "vs-dark", minimap: { enabled: false } }}
             />
           </Form.Item>
-
-          <Button type="primary" onClick={handleSubmit}>
-            Qo'shish
-          </Button>
         </Form>
       </Drawer>
     </div>

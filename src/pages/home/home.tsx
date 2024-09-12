@@ -29,7 +29,7 @@ const Home: React.FC = () => {
 
   return (
     <nav className="navbar">
-      <div className="logo">Logo</div>
+      <div className="logo">Notepad code</div>
       <ul className="nav-links">
         <li>
           <Link
@@ -67,15 +67,7 @@ const Home: React.FC = () => {
             CSS
           </Link>
         </li>
-        <li>
-          <Link
-            to="/scss"
-            className={activeMenuItem === "/scss" ? "active" : ""}
-            onClick={() => handleMenuClick("/scss")}
-          >
-            SCSS
-          </Link>
-        </li>
+
         <li>
           <Link
             to="/bootstrap"
@@ -92,15 +84,6 @@ const Home: React.FC = () => {
             onClick={() => handleMenuClick("/tailwind")}
           >
             Tailwind
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/chakra"
-            className={activeMenuItem === "/chakra" ? "active" : ""}
-            onClick={() => handleMenuClick("/chakra")}
-          >
-            Chakra
           </Link>
         </li>
         <li>
@@ -137,6 +120,15 @@ const Home: React.FC = () => {
             onClick={() => handleMenuClick("/vuejs")}
           >
             Vue.js
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/npm"
+            className={activeMenuItem === "/npm" ? "active" : ""}
+            onClick={() => handleMenuClick("/npm")}
+          >
+            Npm
           </Link>
         </li>
       </ul>
