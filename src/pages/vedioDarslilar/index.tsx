@@ -51,7 +51,7 @@ function Vedio() {
     setLoading(true);
     try {
       const response = await axios.get<SubmittedData[]>(
-        "https://c0adcbfd27d5ecc2.mokky.dev/react"
+        "https://c0adcbfd27d5ecc2.mokky.dev/vedio"
       );
       const data = response.data;
       const filtered = data.filter(
@@ -82,7 +82,7 @@ function Vedio() {
   const handleSubmit = async () => {
     try {
       const response = await axios.post<SubmittedData>(
-        "https://c0adcbfd27d5ecc2.mokky.dev/react",
+        "https://c0adcbfd27d5ecc2.mokky.dev/vedio",
         formData
       );
 
