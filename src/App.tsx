@@ -13,6 +13,7 @@ import VuejsPage from "./pages/veujs/veujs";
 import Java from "./pages/java/java";
 import Cplus from "./pages/c++/c++";
 import Npm from "./pages/npm/npm";
+import Vedio from "./pages/vedioDarslilar";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/java" element={<Java />} />
           <Route path="/cplus" element={<Cplus />} />
           <Route path="/npm" element={<Npm />} />
+          <Route path="/vedio" element={<Vedio />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>

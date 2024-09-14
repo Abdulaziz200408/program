@@ -131,6 +131,15 @@ const Home: React.FC = () => {
             Npm
           </Link>
         </li>
+        <li>
+          <Link
+            to="/vedio"
+            className={activeMenuItem === "/vedio" ? "active" : ""}
+            onClick={() => handleMenuClick("/vedio")}
+          >
+            vedio
+          </Link>
+        </li>
       </ul>
       <button className="buttonhj" type="button" onClick={handleLogout}>
         <img
