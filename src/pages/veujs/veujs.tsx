@@ -198,11 +198,6 @@ function VuejsPage() {
           <p>Yuklanmoqda...</p>
         ) : noData ? (
           <div style={{ textAlign: "center" }}>
-            <img
-              src="https://example.com/no-data.gif" // Ma'lumot topilmasa GIF URL
-              alt="No Data"
-              style={{ width: "100px", height: "100px" }}
-            />
             <p>Ma'lumot topilmadi</p>
             <Button type="primary" onClick={showDrawer}>
               Qo'shish
@@ -211,7 +206,7 @@ function VuejsPage() {
         ) : (
           filteredData.map((item) => (
             <div className="data-item" key={item.id}>
-              <h3 className="data-name ">
+              <h3 className="data-name">
                 <span className="spands">Nomi : </span>
                 {item.name}
               </h3>
@@ -245,7 +240,14 @@ function VuejsPage() {
               )}
               {item.kod && (
                 <div className="data-code-container">
-                  <pre className="data-code">{item.kod}</pre>
+                  <MonacoEditor
+                    height="370px" // Balandlikni oshirish
+                    language="javascript" // Yozayotgan kodingiz tili
+                    value={item.kod}
+                    options={{ theme: "vs-dark", minimap: { enabled: false } }}
+                    // Kodni o'qish uchun
+                    onChange={(value) => {}}
+                  />
                 </div>
               )}
             </div>

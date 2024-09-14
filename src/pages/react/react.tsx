@@ -3,7 +3,7 @@ import { Button, Input, Drawer, Form, message } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
 import axios from "axios";
-import MonacoEditor from "@monaco-editor/react"; // Monaco Editor import
+import MonacoEditor from "@monaco-editor/react"; // Monaco Editor importi
 import "../../App.css";
 
 interface SubmittedData {
@@ -119,7 +119,7 @@ function ReactPage() {
           color: "#fff",
           backgroundColor: "rgb(0, 57, 63)",
           paddingBottom: "20px",
-          paddingTop: "10px", // Corrected background color
+          paddingTop: "10px",
         }}
       >
         <div
@@ -198,11 +198,6 @@ function ReactPage() {
           <p>Yuklanmoqda...</p>
         ) : noData ? (
           <div style={{ textAlign: "center" }}>
-            <img
-              src="https://example.com/no-data.gif" // Ma'lumot topilmasa GIF URL
-              alt="No Data"
-              style={{ width: "100px", height: "100px" }}
-            />
             <p>Ma'lumot topilmadi</p>
             <Button type="primary" onClick={showDrawer}>
               Qo'shish
@@ -211,7 +206,7 @@ function ReactPage() {
         ) : (
           filteredData.map((item) => (
             <div className="data-item" key={item.id}>
-              <h3 className="data-name ">
+              <h3 className="data-name">
                 <span className="spands">Nomi : </span>
                 {item.name}
               </h3>
@@ -245,7 +240,14 @@ function ReactPage() {
               )}
               {item.kod && (
                 <div className="data-code-container">
-                  <pre className="data-code">{item.kod}</pre>
+                  <MonacoEditor
+                    height="370px" // Balandlikni oshirish
+                    language="javascript" // Yozayotgan kodingiz tili
+                    value={item.kod}
+                    options={{ theme: "vs-dark", minimap: { enabled: false } }}
+                    // Kodni o'qish uchun
+                    onChange={(value) => {}}
+                  />
                 </div>
               )}
             </div>
@@ -306,8 +308,8 @@ function ReactPage() {
 
           <Form.Item label="Kod">
             <MonacoEditor
-              height="200px"
-              language="javascript"
+              height="240px" // Balandlikni oshirish
+              language="javascrpt" // Yozayotgan kodingiz tili
               value={formData.kod}
               onChange={(value) =>
                 setFormData((prevData) => ({ ...prevData, kod: value || "" }))
