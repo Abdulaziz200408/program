@@ -241,7 +241,7 @@ function CssPage() {
               {item.kod && (
                 <div className="data-code-container">
                   <MonacoEditor
-                    height="370px" // Balandlikni oshirish
+                    height="200px" // Balandlikni oshirish
                     language="javascript" // Yozayotgan kodingiz tili
                     value={item.kod}
                     options={{ theme: "vs-dark", minimap: { enabled: false } }}
