@@ -12,8 +12,8 @@ interface SubmittedData {
   description?: string;
   imgUrl?: string;
   kod?: string;
-  eslatma?: string;
-  eslatmaFayl?: string;
+  vedioUrl?: string;
+  vedioUrlFayl?: string;
 }
 
 function Vedio() {
@@ -22,7 +22,7 @@ function Vedio() {
     name: "",
     description: "",
     imgUrl: "",
-    eslatma: "",
+    vedioUrl: "",
     kod: "",
   });
 
@@ -80,10 +80,14 @@ function Vedio() {
   }, [filteredData]);
 
   const handleSubmit = async () => {
+    const modifiedVedioUrl = formData.vedioUrl.includes("watch?v=")
+      ? formData.vedioUrl.replace("watch?v=", "embed/")
+      : formData.vedioUrl;
+
     try {
       const response = await axios.post<SubmittedData>(
         "https://c0adcbfd27d5ecc2.mokky.dev/vedio",
-        formData
+        { ...formData, vedioUrl: modifiedVedioUrl } // Use the modified URL
       );
 
       setFilteredData((prevData) => [...prevData, response.data]);
@@ -93,7 +97,7 @@ function Vedio() {
         name: "",
         description: "",
         imgUrl: "",
-        eslatma: "",
+        vedioUrl: "",
         kod: "",
       });
       message.success("Ma'lumot muvaffaqiyatli qo'shildi!");
@@ -224,27 +228,31 @@ function Vedio() {
                 {item.imgUrl && (
                   <img src={item.imgUrl} alt="Rasm" className="data-image" />
                 )}
-                {item.eslatma && (
-                  <p className="data-eslatma">
-                    <span className="spands">Eslatma : </span>
-                    {item.eslatma}
-                  </p>
+                {item.vedioUrl && (
+                  <iframe
+                    width="100%"
+                    height="315"
+                    src={item.vedioUrl} // Corrected to use embed format
+                    title={item.name}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
                 )}
               </div>
-              {item.eslatmaFayl && (
-                <p className="data-eslatmaFayl">
-                  <span className="spands">Eslatma Fayl : </span>
-                  {item.eslatmaFayl}
+              {item.vedioUrlFayl && (
+                <p className="data-vedioUrlFayl">
+                  <span className="spands">vedioUrl Fayl : </span>
+                  {item.vedioUrlFayl}
                 </p>
               )}
               {item.kod && (
                 <div className="data-code-container">
                   <MonacoEditor
-                    height="200px" // Balandlikni oshirish
-                    language="javascript" // Yozayotgan kodingiz tili
+                    height="200px"
+                    language="javascript"
                     value={item.kod}
                     options={{ theme: "vs-dark", minimap: { enabled: false } }}
-                    // Kodni o'qish uchun
                     onChange={(value) => {}}
                   />
                 </div>
@@ -295,25 +303,22 @@ function Vedio() {
             />
           </Form.Item>
 
-          <Form.Item label="Eslatma">
-            <Input.TextArea
-              name="eslatma"
-              rows={4}
-              placeholder="Eslatma"
-              value={formData.eslatma}
+          <Form.Item label="Video URL">
+            <Input
+              name="vedioUrl"
+              placeholder="Video URL"
+              value={formData.vedioUrl}
               onChange={handleChange}
             />
           </Form.Item>
 
           <Form.Item label="Kod">
-            <MonacoEditor
-              height="200px"
-              language="javascript"
+            <Input.TextArea
+              name="kod"
+              rows={4}
+              placeholder="Kod"
               value={formData.kod}
-              onChange={(value) =>
-                setFormData((prevData) => ({ ...prevData, kod: value || "" }))
-              }
-              options={{ theme: "vs-dark", minimap: { enabled: false } }}
+              onChange={handleChange}
             />
           </Form.Item>
         </Form>
