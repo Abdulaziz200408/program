@@ -14,6 +14,7 @@ import Java from "./pages/java/java";
 import Cplus from "./pages/c++/c++";
 import Npm from "./pages/npm/npm";
 import Vedio from "./pages/vedioDarslilar";
+import Figma from "./pages/figma/figma";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/cplus" element={<Cplus />} />
           <Route path="/npm" element={<Npm />} />
           <Route path="/vedio" element={<Vedio />} />
+          <Route path="/figma" element={<Figma />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>

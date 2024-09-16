@@ -140,6 +140,15 @@ const Home: React.FC = () => {
             vedio
           </Link>
         </li>
+        <li>
+          <Link
+            to="/figma"
+            className={activeMenuItem === "/figma" ? "active" : ""}
+            onClick={() => handleMenuClick("/figma")}
+          >
+            figma
+          </Link>
+        </li>
       </ul>
       <button className="buttonhj" type="button" onClick={handleLogout}>
         <img
