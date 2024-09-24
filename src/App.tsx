@@ -15,6 +15,7 @@ import Cplus from "./pages/c++/c++";
 import Npm from "./pages/npm/npm";
 import Vedio from "./pages/vedioDarslilar";
 import Figma from "./pages/figma/figma";
+import All from "./pages/All/all";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/npm" element={<Npm />} />
           <Route path="/vedio" element={<Vedio />} />
           <Route path="/figma" element={<Figma />} />
+          <Route path="/all" element={<All />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>

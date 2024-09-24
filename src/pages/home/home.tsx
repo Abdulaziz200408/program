@@ -79,24 +79,6 @@ const Home: React.FC = () => {
         </li>
         <li>
           <Link
-            to="/tailwind"
-            className={activeMenuItem === "/tailwind" ? "active" : ""}
-            onClick={() => handleMenuClick("/tailwind")}
-          >
-            Tailwind
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/mui"
-            className={activeMenuItem === "/mui" ? "active" : ""}
-            onClick={() => handleMenuClick("/mui")}
-          >
-            MUI
-          </Link>
-        </li>
-        <li>
-          <Link
             to="/react"
             className={activeMenuItem === "/react" ? "active" : ""}
             onClick={() => handleMenuClick("/react")}
@@ -138,6 +120,16 @@ const Home: React.FC = () => {
             onClick={() => handleMenuClick("/vedio")}
           >
             vedio
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            to="/all"
+            className={activeMenuItem === "/all" ? "active" : ""}
+            onClick={() => handleMenuClick("/all")}
+          >
+            Barchasi
           </Link>
         </li>
         <li>
