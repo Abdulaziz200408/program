@@ -37,7 +37,7 @@ function App() {
           <Route path="/npm" element={<Npm />} />
           <Route path="/vedio" element={<Vedio />} />
           <Route path="/figma" element={<Figma />} />
-          <Route path="/all" element={<All />} />
+          <Route path="/barchasi" element={<All />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>

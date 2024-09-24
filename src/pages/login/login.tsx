@@ -105,7 +105,7 @@ function Login() {
       localStorage.setItem("password", password);
       localStorage.setItem("role", "admin"); // Admin sifatida saqlash
       setIsLoggedIn(true);
-      toast.success("Admin sifatida muvaffaqiyatli ro'yxatdan o'tdingiz!", {
+      toast.success("Ro'yxatdan muvaffaqiyatli o'tdingiz!", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: true,
