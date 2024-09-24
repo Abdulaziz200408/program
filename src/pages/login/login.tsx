@@ -12,8 +12,8 @@ function Login() {
   useEffect(() => {
     const savedName = localStorage.getItem("name");
     const savedPassword = localStorage.getItem("password");
+    // Agar localStorage'da name va password mavjud bo'lsa, avtomatik tizimga kiritish
     if (savedName && savedPassword) {
-      // Agar localStorage'da name va password mavjud bo'lsa, avtomatik tizimga kiritish
       setIsLoggedIn(true);
     }
   }, []);
@@ -60,6 +60,9 @@ function Login() {
         );
 
         if (response.ok) {
+          // Ro'yxatdan o'tgandan so'ng ma'lumotlarni saqlash
+          localStorage.setItem("name", name);
+          localStorage.setItem("password", password);
           setIsLoggedIn(true);
           toast.success("Ro'yxatdan muvaffaqiyatli o'tdingiz!", {
             position: "top-right",

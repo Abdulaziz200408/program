@@ -15,14 +15,6 @@ const Home: React.FC = () => {
     setActiveMenuItem(location.pathname);
   }, [location]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
-    localStorage.removeItem("name");
-    localStorage.removeItem("activeMenu");
-    console.log("Logged out");
-  };
-
   const handleMenuClick = (path: string) => {
     setActiveMenuItem(path);
     localStorage.setItem("activeMenu", path);
@@ -67,7 +59,7 @@ const Home: React.FC = () => {
             "/vuejs",
             "/npm",
             "/vedio",
-            "/all",
+            "/Barchasi",
             "/figma",
           ].map((path) => (
             <li key={path}>
@@ -77,12 +69,11 @@ const Home: React.FC = () => {
                 onClick={() => handleMenuClick(path)}
               >
                 {path.substring(1).charAt(0).toUpperCase() + path.slice(2)}{" "}
-                {/* To'g'ri formatlash */}
               </Link>
             </li>
           ))}
         </ul>
-        <button className="buttonhj" type="button" onClick={handleLogout}>
+        <button className="buttonhj" type="button">
           <img
             style={{
               width: "40px",
@@ -90,8 +81,8 @@ const Home: React.FC = () => {
               borderRadius: "50%",
               marginLeft: "5px",
             }}
-            src="https://wallpapers.com/images/hd/anime-boy-in-black-and-white-anime-pfp-sefsf1g02629xu37.jpg"
-            alt=""
+            src="https://i.pinimg.com/736x/db/74/72/db7472f8861342037374fc928a201781.jpg"
+            alt="User Avatar"
             onClick={() => {
               if (localStorage.getItem("role") === "admin") {
                 showDrawer(); // Agar admin bo'lsa, drawer ochish
@@ -108,10 +99,11 @@ const Home: React.FC = () => {
         placement="right"
         onClose={closeDrawer}
         visible={visible}
+        width={400} // Drawer kengligini o'zgartirish
       >
         {userData.length > 0 ? (
           userData.map((user) => (
-            <div key={user.id}>
+            <div key={user.id} className="user-card">
               <h3>Name: {user.name}</h3>
               <h3>ID: {user.id}</h3>
               <hr />

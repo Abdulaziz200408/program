@@ -64,3 +64,17 @@
   -moz-box-shadow: -1px -4px 54px 1px rgba(187, 225, 255, 0.72) inset;
   box-shadow: -1px -4px 54px 1px rgba(187, 225, 255, 0.72) inset;
 }
+
+.user-card {
+  border: 1px solid #eaeaea; /* Chegarani belgilash */
+  border-radius: 8px; /* Burchaklarni yumshatish */
+  padding: 16px; /* Ichki bo'shliqlar */
+  margin: 10px 0; /* Tashqi bo'shliqlar */
+  background-color: #f9f9f9; /* Orqa fon rangini belgilash */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* So'ya berish */
+}
+
+.user-card h3 {
+  margin: 0; /* H3 elementlarining default bo'shliqlarini olib tashlash */
+  font-size: 16px; /* Matn o'lchami */
+}
