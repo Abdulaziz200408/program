@@ -14,6 +14,7 @@ interface SubmittedData {
   kod?: string;
   eslatma?: string;
   eslatmaFayl?: string;
+  userName?: string; // Foydalanuvchi nomi
 }
 
 function ReactPage() {
@@ -31,6 +32,8 @@ function ReactPage() {
   const [loading, setLoading] = useState(false);
   const [noData, setNoData] = useState(false);
   const dataContainerRef = useRef<HTMLDivElement>(null);
+
+  const userName = localStorage.getItem("name") || "Anonim"; // Foydalanuvchi ismini olish
 
   const showDrawer = () => {
     setOpenDrawer(true);
@@ -53,7 +56,10 @@ function ReactPage() {
       const response = await axios.get<SubmittedData[]>(
         "https://c0adcbfd27d5ecc2.mokky.dev/react"
       );
-      const data = response.data;
+      const data = response.data.map((item) => ({
+        ...item,
+        userName: item.userName || "Anonim", // Har bir ma'lumotga foydalanuvchi nomini qo'shish
+      }));
       const filtered = data.filter(
         (item) =>
           item.name?.toLowerCase().includes(query.toLowerCase()) ||
@@ -81,9 +87,10 @@ function ReactPage() {
 
   const handleSubmit = async () => {
     try {
+      const newEntry = { ...formData, userName }; // Yangi ma'lumotga foydalanuvchi nomini qo'shish
       const response = await axios.post<SubmittedData>(
         "https://c0adcbfd27d5ecc2.mokky.dev/react",
-        formData
+        newEntry
       );
 
       setFilteredData((prevData) => [...prevData, response.data]);
@@ -206,6 +213,10 @@ function ReactPage() {
         ) : (
           filteredData.map((item) => (
             <div className="data-item" key={item.id}>
+              <h1>
+                <span>{item.userName}</span>{" "}
+                {/* Foydalanuvchi ismini ko'rsatish */}
+              </h1>
               <h3 className="data-name">
                 <span className="spands">Nomi : </span>
                 {item.name}
@@ -268,53 +279,40 @@ function ReactPage() {
         }
       >
         <Form layout="vertical">
-          <Form.Item label="Name">
-            <Input
-              name="name"
-              placeholder="Nomi"
-              value={formData.name}
-              onChange={handleChange}
-            />
+          <Form.Item label="Nomi">
+            <Input name="name" value={formData.name} onChange={handleChange} />
           </Form.Item>
-
-          <Form.Item label="Description">
+          <Form.Item label="Malumot">
             <Input.TextArea
               name="description"
-              rows={4}
-              placeholder="Tavsif"
               value={formData.description}
               onChange={handleChange}
             />
           </Form.Item>
-
-          <Form.Item label="Image URL">
+          <Form.Item label="Rasm URL">
             <Input
               name="imgUrl"
-              placeholder="Rasm URL"
               value={formData.imgUrl}
               onChange={handleChange}
             />
           </Form.Item>
-
           <Form.Item label="Eslatma">
             <Input.TextArea
               name="eslatma"
-              rows={4}
-              placeholder="Eslatma"
               value={formData.eslatma}
               onChange={handleChange}
             />
           </Form.Item>
-
           <Form.Item label="Kod">
             <MonacoEditor
-              height="240px" // Balandlikni oshirish
-              language="javascrpt" // Yozayotgan kodingiz tili
+              height="200px" // Balandlikni oshirish
+              language="javascript" // Yozayotgan kodingiz tili
               value={formData.kod}
-              onChange={(value) =>
-                setFormData((prevData) => ({ ...prevData, kod: value || "" }))
-              }
               options={{ theme: "vs-dark", minimap: { enabled: false } }}
+              onChange={
+                (value) =>
+                  setFormData((prev) => ({ ...prev, kod: value || "" })) // value uchun "" qiymatini o'rnatish
+              }
             />
           </Form.Item>
         </Form>
