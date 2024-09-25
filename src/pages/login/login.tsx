@@ -2,128 +2,82 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React, { useState, useEffect } from "react";
 import "./login.css";
-import Menu from "../home/home"; // Menu uchun to‘g‘ri yo‘lni ta'minlang
+import Home from "../home/home";
+
+interface UserData {
+  name: string;
+  password: string;
+  role?: string; // role maydoni optional
+}
 
 function Login() {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
     const savedName = localStorage.getItem("name");
     const savedPassword = localStorage.getItem("password");
+    const savedAdmin = localStorage.getItem("admin");
+
     // Agar localStorage'da name va password mavjud bo'lsa, avtomatik tizimga kiritish
     if (savedName && savedPassword) {
       setIsLoggedIn(true);
+      if (savedAdmin === "true") {
+        setIsAdmin(true);
+      }
     }
   }, []);
 
-  // Foydalanuvchi nomini tekshirish
-  const validateName = (name: string) => {
-    const nameRegex = /^[a-zA-Z]+$/;
-    return nameRegex.test(name);
+  const saveUserDataToAPI = async (userData: UserData) => {
+    try {
+      const response = await fetch("https://c0adcbfd27d5ecc2.mokky.dev/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(`Xatolik: ${error.message}`);
+      } else {
+        toast.error("Noma'lum xatolik yuz berdi.");
+      }
+    }
   };
 
   const handleLogin = async () => {
-    if (!validateName(name)) {
-      toast.error(
-        "Foydalanuvchi ismi faqat harflardan iborat bo‘lishi kerak.",
-        {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
+    // Ismni tekshirish
+    if (!name || name.length < 4 || !/^[A-Za-z]+$/.test(name)) {
+      toast.error("Iltimos, ismingizni to'g'ri kiriting.");
       return;
     }
 
-    if (name.length > 0 && password === "2004") {
+    let userData: UserData = {
+      name: name,
+      password: password,
+    };
+
+    if (password === "2004") {
       localStorage.setItem("name", name);
       localStorage.setItem("password", password);
-      localStorage.setItem("role", "user"); // Foydalanuvchi sifatida saqlash
-
-      // Foydalanuvchi ma'lumotlarini API ga jo'natish
-      try {
-        const response = await fetch(
-          "https://6d548820c3f18dbd.mokky.dev/users",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ name, password }),
-          }
-        );
-
-        if (response.ok) {
-          // Ro'yxatdan o'tgandan so'ng ma'lumotlarni saqlash
-          localStorage.setItem("name", name);
-          localStorage.setItem("password", password);
-          setIsLoggedIn(true);
-          toast.success("Ro'yxatdan muvaffaqiyatli o'tdingiz!", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        } else {
-          throw new Error("Ro'yxatdan o'tishda xatolik yuz berdi.");
-        }
-      } catch (error: unknown) {
-        // 'error' obyektini tiplash va xabarni chiqarish
-        if (error instanceof Error) {
-          toast.error(error.message, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        } else {
-          toast.error("Noma'lum xatolik yuz berdi.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-      }
-    } else if (name.length > 0 && password === "ican") {
-      localStorage.setItem("name", name);
-      localStorage.setItem("password", password);
-      localStorage.setItem("role", "admin"); // Admin sifatida saqlash
       setIsLoggedIn(true);
-      toast.success("Ro'yxatdan muvaffaqiyatli o'tdingiz!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      setIsAdmin(false);
+      toast.success("Ro'yxatdan muvaffaqiyatli o'tdingiz!");
+      await saveUserDataToAPI(userData); // Ma'lumotlarni API-ga yuborish
+    } else if (password === "ican") {
+      localStorage.setItem("name", name);
+      localStorage.setItem("password", password);
+      localStorage.setItem("role", "admin"); // Admin rolini saqlash
+      setIsLoggedIn(true);
+      setIsAdmin(true);
+      userData.role = "admin"; // Admin rolini qo'shish
+      toast.success("Admin sifatida tizimga kirdingiz!");
+      await saveUserDataToAPI(userData); // Ma'lumotlarni API-ga yuborish
     } else {
-      toast.error("Foydalanuvchi ismi yoki parol noto'g'ri", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.error("Foydalanuvchi ismi yoki parol noto'g'ri");
     }
   };
 
@@ -131,11 +85,22 @@ function Login() {
     <div>
       <ToastContainer />
       {isLoggedIn ? (
-        <Menu />
+        <Home />
       ) : (
         <div className="login-container">
+          {/* Dumaloq elementlar */}
+          <div className="circle">JavaScript</div>
+          <div className="circle">TypeScript</div>
+          <div className="circle">React</div>
+          <div className="circle">Next.js</div>
+          <div className="circle">Vite</div>
+          <div className="circle">SASS</div>
+          <div className="circle">Node.js</div>
+          <div className="circle">Python</div>
+          <div className="circle">Go</div>
+
           <div className="login-box">
-            <h2 className="login-title">Notepad Code Login</h2>
+            <h2 className="login-title">Login</h2>
 
             <input
               type="text"
@@ -153,12 +118,7 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button
-              style={{ marginTop: "10px" }}
-              className="submit-btn"
-              type="button"
-              onClick={handleLogin}
-            >
+            <button className="submit-btn" type="button" onClick={handleLogin}>
               Login
             </button>
           </div>

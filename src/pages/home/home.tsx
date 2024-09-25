@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Drawer, Button } from "antd"; // Ant Design kutubxonasidan foydalanamiz
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Drawer } from "antd"; // Ant Design kutubxonasidan foydalanamiz
 import "../home/home.css"; // CSS faylini to‘g‘ri yo‘l bilan ta'minlang
 
 const Home: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // Sahifani yangilash uchun ishlatiladi
   const [activeMenuItem, setActiveMenuItem] = useState<string>(
     localStorage.getItem("activeMenu") || "/java"
   );
-  const [visible, setVisible] = useState(false);
+  const [open, setOpen] = useState(false); // visible -> open nomiga o'zgartirildi
   const [userData, setUserData] = useState<any[]>([]); // Foydalanuvchi ma'lumotlari uchun
 
   useEffect(() => {
@@ -24,14 +25,14 @@ const Home: React.FC = () => {
 
   // Drawer ochish
   const showDrawer = () => {
-    setVisible(true);
+    setOpen(true);
     fetchUserData(); // Foydalanuvchi ma'lumotlarini olish
   };
 
   // API dan foydalanuvchi ma'lumotlarini olish
   const fetchUserData = async () => {
     try {
-      const response = await fetch("https://6d548820c3f18dbd.mokky.dev/users");
+      const response = await fetch("https://c0adcbfd27d5ecc2.mokky.dev/user");
       const data = await response.json();
       setUserData(data); // Olingan ma'lumotlarni saqlash
     } catch (error) {
@@ -40,7 +41,13 @@ const Home: React.FC = () => {
   };
 
   const closeDrawer = () => {
-    setVisible(false);
+    setOpen(false); // Drawer yopish
+  };
+
+  // Logout funksiyasi
+  const handleLogout = () => {
+    localStorage.clear(); // Barcha localStorage ma'lumotlarini tozalash
+    window.location.reload();
   };
 
   return (
@@ -73,6 +80,13 @@ const Home: React.FC = () => {
             </li>
           ))}
         </ul>
+
+        {/* Chiqish tugmasi */}
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+
+        {/* Profil rasmi va drawer */}
         <button className="buttonhj" type="button">
           <img
             style={{
@@ -98,7 +112,7 @@ const Home: React.FC = () => {
         title="User Information"
         placement="right"
         onClose={closeDrawer}
-        visible={visible}
+        open={open} // visible -> open deb o'zgartirildi
         width={400} // Drawer kengligini o'zgartirish
       >
         {userData.length > 0 ? (
