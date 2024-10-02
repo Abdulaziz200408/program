@@ -275,7 +275,7 @@ function Projects() {
         }
       >
         <Form layout="vertical">
-          <Form.Item label="Nomi">
+          <Form.Item label="Loyihanggiz nomi">
             <Input name="name" value={formData.name} onChange={handleChange} />
           </Form.Item>
           <Form.Item label="Malumot">
@@ -292,23 +292,11 @@ function Projects() {
               onChange={handleChange}
             />
           </Form.Item>
-          <Form.Item label="Eslatma">
+          <Form.Item label="Loyiha URL">
             <Input.TextArea
               name="eslatma"
               value={formData.eslatma}
               onChange={handleChange}
-            />
-          </Form.Item>
-          <Form.Item label="Kod">
-            <MonacoEditor
-              height="200px" // Balandlikni oshirish
-              language="javascript" // Yozayotgan kodingiz tili
-              value={formData.kod}
-              options={{ theme: "vs-dark", minimap: { enabled: false } }}
-              onChange={
-                (value) =>
-                  setFormData((prev) => ({ ...prev, kod: value || "" })) // value uchun "" qiymatini o'rnatish
-              }
             />
           </Form.Item>
         </Form>
