@@ -3,6 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import React, { useState, useEffect } from "react";
 import "./login.css";
 import Home from "../home/home";
+import Explent from "../explent/explent";
 
 interface UserData {
   name: string;
@@ -67,7 +68,7 @@ function Login() {
     <div>
       <ToastContainer />
       {isLoggedIn ? (
-        <Home />
+        <Explent />
       ) : (
         <div className="login-container">
           {/* Dumaloq elementlar */}

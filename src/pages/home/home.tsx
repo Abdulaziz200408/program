@@ -49,6 +49,7 @@ const Home: React.FC = () => {
   // Logout funksiyasi
   const handleLogout = () => {
     localStorage.clear();
+    navigate("/login");
     window.location.reload();
   };
 

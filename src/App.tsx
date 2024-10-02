@@ -18,14 +18,24 @@ import Figma from "./pages/figma/figma";
 import All from "./pages/All/all";
 import Projects from "./pages/Projects/projects";
 import Sshap from "./pages/sshap/ashap";
+import Explent from "./pages/explent/explent";
 
 function App() {
+  const isLoggedIn = !!localStorage.getItem("name"); // Foydalanuvchi login qilinganligini aniqlash
+
   return (
     <Router>
       <div>
-        <Login />
+        {/* Navbar faqat foydalanuvchi login qilganida ko'rinadi */}
+        {isLoggedIn && <Navbar />}
 
         <Routes>
+          {/* Agar foydalanuvchi login qilgan bo'lsa, "Explent" sahifasini ko'rsatamiz */}
+          {!isLoggedIn ? (
+            <Route path="/login" element={<Login />} />
+          ) : (
+            <Route path="/explent" element={<Explent />} />
+          )}
           <Route path="/html" element={<HtmlPage />} />
           <Route path="/css" element={<CssPage />} />
           <Route path="/bootstrap" element={<BootstrapPage />} />
@@ -42,7 +52,11 @@ function App() {
           <Route path="/barchasi" element={<All />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/sshap" element={<Sshap />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={isLoggedIn ? <HtmlPage /> : <Login />}
+          />{" "}
+          {/* Default sahifa */}
         </Routes>
       </div>
     </Router>

@@ -126,7 +126,8 @@ function Mui() {
           style={{
             padding: "10px",
             paddingLeft: "50px",
-            width: "270px",
+            gap: "10px",
+            width: "300px",
             height: "100%",
             display: "flex",
             alignItems: "center",
