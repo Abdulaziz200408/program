@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Drawer } from "antd";
-import { BsThreeDotsVertical } from "react-icons/bs"; // Dot ikonasini import qilamiz
+import { BsThreeDotsVertical } from "react-icons/bs";
 import "../home/home.css"; // CSS faylini to‘g‘ri yo‘l bilan ta'minlang
 
 const Home: React.FC = () => {
@@ -55,7 +55,7 @@ const Home: React.FC = () => {
   return (
     <>
       <nav className="navbar">
-        <div className="logo">Notepad code</div>
+        <div className="logo">Notepad Code</div>
         <ul className="nav-links">
           {[
             "/java",
@@ -70,6 +70,7 @@ const Home: React.FC = () => {
             "/vedio",
             "/Barchasi",
             "/figma",
+            "/projects", // "Projects" menyusini qo'shdik
           ].map((path) => (
             <li key={path}>
               <Link
@@ -77,7 +78,7 @@ const Home: React.FC = () => {
                 className={activeMenuItem === path ? "active" : ""}
                 onClick={() => handleMenuClick(path)}
               >
-                {path.substring(1).charAt(0).toUpperCase() + path.slice(2)}{" "}
+                {path.substring(1).charAt(0).toUpperCase() + path.slice(2)}
               </Link>
             </li>
           ))}
