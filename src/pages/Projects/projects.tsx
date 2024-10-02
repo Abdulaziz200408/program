@@ -248,8 +248,8 @@ function Projects() {
               {item.kod && (
                 <div className="data-code-container">
                   <MonacoEditor
-                    height="200px" // Balandlikni oshirish
-                    language="javascript" // Yozayotgan kodingiz tili
+                    height="50px" // Balandlikni oshirish
+                    language="Javascrpt" // Yozayotgan kodingiz tili
                     value={item.kod}
                     options={{ theme: "vs-dark", minimap: { enabled: false } }}
                     // Kodni o'qish uchun
@@ -293,10 +293,15 @@ function Projects() {
             />
           </Form.Item>
           <Form.Item label="Loyiha URL">
-            <Input.TextArea
-              name="eslatma"
-              value={formData.eslatma}
-              onChange={handleChange}
+            <MonacoEditor
+              height="100px" // Balandlikni oshirish
+              language="vercel" // Yozayotgan kodingiz tili
+              value={formData.kod}
+              options={{ theme: "vs-dark", minimap: { enabled: false } }}
+              onChange={
+                (value) =>
+                  setFormData((prev) => ({ ...prev, kod: value || "" })) // value uchun "" qiymatini o'rnatish
+              }
             />
           </Form.Item>
         </Form>
