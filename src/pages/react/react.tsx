@@ -213,10 +213,6 @@ function ReactPage() {
         ) : (
           filteredData.map((item) => (
             <div className="data-item" key={item.id}>
-              <h1>
-                <span>{item.userName}</span>{" "}
-                {/* Foydalanuvchi ismini ko'rsatish */}
-              </h1>
               <h3 className="data-name">
                 <span className="spands">Nomi : </span>
                 {item.name}
