@@ -29,6 +29,46 @@
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
+.profile-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 15px;
+}
+
+.dot-icon {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 60px; /* Rasm pastida chiqishi uchun */
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 150px; /* Kattalikni moslash */
+  padding: 10px;
+  z-index: 10;
+}
+
+.dropdown-menu p {
+  margin: 0;
+  font-size: 14px;
+  color: black;
+}
+
+.logout-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
 .nav-links a:hover {
   background-color: aqua;
   transform: translateY(-5px); /* Lift the item on hover */

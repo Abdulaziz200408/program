@@ -6,23 +6,20 @@ import Home from "../home/home";
 
 interface UserData {
   name: string;
-  password: string;
   role?: string; // role maydoni optional
 }
 
 function Login() {
   const [name, setName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
     const savedName = localStorage.getItem("name");
-    const savedPassword = localStorage.getItem("password");
     const savedAdmin = localStorage.getItem("admin");
 
-    // Agar localStorage'da name va password mavjud bo'lsa, avtomatik tizimga kiritish
-    if (savedName && savedPassword) {
+    // Agar localStorage'da name mavjud bo'lsa, avtomatik tizimga kiritish
+    if (savedName) {
       setIsLoggedIn(true);
       if (savedAdmin === "true") {
         setIsAdmin(true);
@@ -57,28 +54,13 @@ function Login() {
 
     let userData: UserData = {
       name: name,
-      password: password,
     };
 
-    if (password === "2004") {
-      localStorage.setItem("name", name);
-      localStorage.setItem("password", password);
-      setIsLoggedIn(true);
-      setIsAdmin(false);
-      toast.success("Ro'yxatdan muvaffaqiyatli o'tdingiz!");
-      await saveUserDataToAPI(userData); // Ma'lumotlarni API-ga yuborish
-    } else if (password === "ican") {
-      localStorage.setItem("name", name);
-      localStorage.setItem("password", password);
-      localStorage.setItem("role", "admin"); // Admin rolini saqlash
-      setIsLoggedIn(true);
-      setIsAdmin(true);
-      userData.role = "admin"; // Admin rolini qo'shish
-      toast.success("Admin sifatida tizimga kirdingiz!");
-      await saveUserDataToAPI(userData); // Ma'lumotlarni API-ga yuborish
-    } else {
-      toast.error("Foydalanuvchi ismi yoki parol noto'g'ri");
-    }
+    // Ma'lumotlarni API'ga yuborish
+    await saveUserDataToAPI(userData);
+    setIsLoggedIn(true);
+    localStorage.setItem("name", name);
+    toast.success("Tizimga muvaffaqiyatli kirdingiz!");
   };
 
   return (
@@ -108,14 +90,6 @@ function Login() {
               className="input-field"
               value={name}
               onChange={(e) => setName(e.target.value)}
-            />
-
-            <input
-              type="password"
-              placeholder="Password"
-              className="input-field"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
 
             <button className="submit-btn" type="button" onClick={handleLogin}>

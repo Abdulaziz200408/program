@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Drawer } from "antd"; // Ant Design kutubxonasidan foydalanamiz
+import { Drawer } from "antd";
+import { BsThreeDotsVertical } from "react-icons/bs"; // Dot ikonasini import qilamiz
 import "../home/home.css"; // CSS faylini to‘g‘ri yo‘l bilan ta'minlang
 
 const Home: React.FC = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // Sahifani yangilash uchun ishlatiladi
+  const navigate = useNavigate();
   const [activeMenuItem, setActiveMenuItem] = useState<string>(
     localStorage.getItem("activeMenu") || "/java"
   );
-  const [open, setOpen] = useState(false); // visible -> open nomiga o'zgartirildi
-  const [userData, setUserData] = useState<any[]>([]); // Foydalanuvchi ma'lumotlari uchun
+  const [open, setOpen] = useState(false); // Drawer uchun state
+  const [menuVisible, setMenuVisible] = useState(false); // Dot menyusi uchun state
+  const [userData, setUserData] = useState<any[]>([]);
 
   useEffect(() => {
     setActiveMenuItem(location.pathname);
@@ -34,19 +36,19 @@ const Home: React.FC = () => {
     try {
       const response = await fetch("https://c0adcbfd27d5ecc2.mokky.dev/user");
       const data = await response.json();
-      setUserData(data); // Olingan ma'lumotlarni saqlash
+      setUserData(data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
 
   const closeDrawer = () => {
-    setOpen(false); // Drawer yopish
+    setOpen(false);
   };
 
   // Logout funksiyasi
   const handleLogout = () => {
-    localStorage.clear(); // Barcha localStorage ma'lumotlarini tozalash
+    localStorage.clear();
     window.location.reload();
   };
 
@@ -81,51 +83,59 @@ const Home: React.FC = () => {
           ))}
         </ul>
 
-        {/* Chiqish tugmasi */}
-        <button className="logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
-
-        {/* Profil rasmi va drawer */}
-        <button className="buttonhj" type="button">
+        {/* Foydalanuvchi rasmi, ismi va dot ikona */}
+        <div className="profile-container">
           <img
             style={{
               width: "40px",
               height: "40px",
               borderRadius: "50%",
-              marginLeft: "5px",
+              cursor: "pointer",
+              objectFit: "cover",
+              marginLeft: "10px",
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+              transition: "box-shadow 0.3s ease",
+              backgroundColor: "white",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
+            className="avatar-img"
             src="https://i.pinimg.com/736x/db/74/72/db7472f8861342037374fc928a201781.jpg"
             alt="User Avatar"
             onClick={() => {
               if (localStorage.getItem("role") === "admin") {
-                showDrawer(); // Agar admin bo'lsa, drawer ochish
+                showDrawer(); // Admin bo'lsa, drawer ochish
               }
             }}
           />
-          {name}
-        </button>
+          <BsThreeDotsVertical
+            className="dot-icon"
+            onClick={() => setMenuVisible(!menuVisible)}
+          />
+          {menuVisible && (
+            <div className="dropdown-menu">
+              <p>{name}</p>
+              <button className="logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
       </nav>
 
-      {/* Drawer komponenti */}
+      {/* Drawer */}
       <Drawer
         title="User Information"
         placement="right"
         onClose={closeDrawer}
-        open={open} // visible -> open deb o'zgartirildi
-        width={400} // Drawer kengligini o'zgartirish
+        open={open}
+        width={400}
       >
-        {userData.length > 0 ? (
-          userData.map((user) => (
-            <div key={user.id} className="user-card">
-              <h3>Name: {user.name}</h3>
-              <h3>ID: {user.id}</h3>
-              <hr />
-            </div>
-          ))
-        ) : (
-          <p>Loading...</p>
-        )}
+        <h3>Name: {name}</h3> {/* Foydalanuvchi ismi */}
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </Drawer>
     </>
   );
