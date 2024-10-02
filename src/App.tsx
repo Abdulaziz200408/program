@@ -16,6 +16,8 @@ import Npm from "./pages/npm/npm";
 import Vedio from "./pages/vedioDarslilar";
 import Figma from "./pages/figma/figma";
 import All from "./pages/All/all";
+import Projects from "./pages/Projects/projects";
+import Sshap from "./pages/sshap/ashap";
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
           <Route path="/vedio" element={<Vedio />} />
           <Route path="/figma" element={<Figma />} />
           <Route path="/barchasi" element={<All />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/sshap" element={<Sshap />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>

@@ -71,6 +71,7 @@ const Home: React.FC = () => {
             "/Barchasi",
             "/figma",
             "/projects", // "Projects" menyusini qo'shdik
+            "/sshap",
           ].map((path) => (
             <li key={path}>
               <Link

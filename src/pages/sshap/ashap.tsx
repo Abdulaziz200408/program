@@ -17,7 +17,7 @@ interface SubmittedData {
   userName?: string; // Foydalanuvchi nomi
 }
 
-function Projects() {
+function Sshap() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -54,7 +54,7 @@ function Projects() {
     setLoading(true);
     try {
       const response = await axios.get<SubmittedData[]>(
-        "https://c0adcbfd27d5ecc2.mokky.dev/projects"
+        "https://c0adcbfd27d5ecc2.mokky.dev/sshap"
       );
       const data = response.data.map((item) => ({
         ...item,
@@ -89,7 +89,7 @@ function Projects() {
     try {
       const newEntry = { ...formData, userName }; // Yangi ma'lumotga foydalanuvchi nomini qo'shish
       const response = await axios.post<SubmittedData>(
-        "https://c0adcbfd27d5ecc2.mokky.dev/projects",
+        "https://c0adcbfd27d5ecc2.mokky.dev/sshap",
         newEntry
       );
 
@@ -317,4 +317,4 @@ function Projects() {
   );
 }
 
-export default Projects;
+export default Sshap;
