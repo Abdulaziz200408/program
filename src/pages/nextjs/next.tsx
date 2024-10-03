@@ -5,6 +5,7 @@ import { IoMdSearch } from "react-icons/io";
 import axios from "axios";
 import MonacoEditor from "@monaco-editor/react"; // Monaco Editor import
 import "../../App.css";
+import remove from "../remove.png";
 
 interface SubmittedData {
   id: number;
@@ -198,9 +199,25 @@ function NextjsPage() {
         {loading ? (
           <p>Yuklanmoqda...</p>
         ) : noData ? (
-          <div style={{ textAlign: "center" }}>
-            <p>Ma'lumot topilmadi</p>
-            <Button type="primary" onClick={showDrawer}>
+          <div
+            style={{
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <img src={remove} alt="" />
+            </div>
+            <Button
+              className="premium-button"
+              type="primary"
+              onClick={showDrawer}
+            >
               Qo'shish
             </Button>
           </div>

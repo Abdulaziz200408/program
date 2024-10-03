@@ -1,36 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import img1 from "./immg1.png";
-import img2 from "./2.png";
-import img3 from "./3.png";
+import img1 from "./img1.png";
 import "./ex.css";
 
 function Explent() {
-  const navigate = useNavigate(); // useNavigate dan foydalanamiz
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const images = [
-    {
-      src: img1,
-      desc: "Ushbu sahifa orqali siz yangi ma'lumotlarni qo'shishingiz mumkin. Nomi, Tavsif, Rasm URL, va Eslatma maydonlari orqali kerakli ma'lumotlarni kiritib, Codni qo'shish tugmasi orqali saqlashingiz mumkin.",
-    },
-    {
-      src: img2,
-      desc: "Bu menyudan siz kerakli dasturlash tilini tanlashingiz va ma'lumotlarni qidirishingiz mumkin. Java, React, Next.js kabi tillar bo'yicha ma'lumotlarni izlash uchun tezkor yo'llar mavjud.",
-    },
-    {
-      src: img3,
-      desc: "Bu bo'limda siz profil sozlamalarini boshqarishingiz va saytdan chiqishingiz mumkin. Profilning yuqori qismida chiqish tugmasi joylashgan.",
-    },
-  ];
-
-  const handlePrev = () => {
-    setCurrentSlide((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentSlide((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
+  const navigate = useNavigate();
 
   const handleContinue = () => {
     navigate("/"); // Home sahifasiga o'tish
@@ -38,35 +12,58 @@ function Explent() {
   };
 
   return (
-    <div className="slider-container">
-      <h2>Saytni ishlatish bo'yicha qo'llanma</h2>
-
-      <div className="slider">
-        <button className="left-arrow" onClick={handlePrev}>
-          &#10094;
-        </button>
-
-        <div className="slide">
-          <img
-            src={images[currentSlide].src}
-            alt="Slider Image"
-            className="slider-image"
-          />
-          <div className="text-overlay">
-            <p className="image-description">{images[currentSlide].desc}</p>
-          </div>
-        </div>
-
-        <button className="right-arrow" onClick={handleNext}>
-          &#10095;
-        </button>
-      </div>
-
-      <div className="button-container">
-        <button onClick={handleContinue} className="continue-button">
-          Davom etish
-        </button>
-      </div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        color: "white",
+        height: "100vh",
+        padding: "20px",
+      }}
+    >
+      <h2
+        style={{
+          marginTop: "10px",
+          marginBottom: "20px",
+          textAlign: "center",
+          fontSize: "32px",
+          fontWeight: "bold",
+          color: "#f5f5f5",
+          width: "100%",
+        }}
+      >
+        Saytni ishlatish bo'yicha qo'llanma
+      </h2>
+      <img
+        style={{
+          width: "76%",
+          height: "80vh",
+          objectFit: "cover",
+          marginTop: "-10px",
+          borderRadius: "10px",
+          boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.3)",
+        }}
+        src={img1}
+        alt="Qo'llanma rasmi"
+      />
+      <button
+        onClick={handleContinue}
+        style={{
+          marginTop: "10px",
+          padding: "10px 20px",
+          fontSize: "18px",
+          color: "#fff",
+          backgroundColor: "#ff7b54",
+          border: "none",
+          borderRadius: "10px",
+          cursor: "pointer",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+        }}
+      >
+        Davom etish
+      </button>
     </div>
   );
 }
