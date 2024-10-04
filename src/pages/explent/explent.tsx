@@ -38,8 +38,8 @@ function Explent() {
       </h2>
       <img
         style={{
-          width: "76%",
-          height: "80vh",
+          width: "79%",
+          height: "89vh",
           objectFit: "cover",
           marginTop: "-10px",
           borderRadius: "10px",
