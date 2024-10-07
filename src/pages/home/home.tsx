@@ -56,7 +56,7 @@ const Home: React.FC = () => {
   return (
     <>
       <nav className="navbar">
-        <div className="logo">Notepad Code</div>
+        <div className="logo">Notepad Codes</div>
         <ul className="nav-links">
           {[
             "/java",
