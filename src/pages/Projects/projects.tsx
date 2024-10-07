@@ -235,10 +235,6 @@ function Projects() {
                 <span className="spands">Nomi : </span>
                 {item.name}
               </h3>
-              <p className="data-description">
-                <span className="spands">Malumot : </span>
-                {item.description}
-              </p>
 
               <div
                 style={{
@@ -248,7 +244,15 @@ function Projects() {
                 }}
               >
                 {item.imgUrl && (
-                  <img src={item.imgUrl} alt="Rasm" className="data-image" />
+                  <img
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      backgroundPosition: "start",
+                    }}
+                    src={item.imgUrl}
+                    alt="Rasm"
+                  />
                 )}
                 {item.eslatma && (
                   <p className="data-eslatma">
@@ -296,13 +300,7 @@ function Projects() {
           <Form.Item label="Loyihanggiz nomi">
             <Input name="name" value={formData.name} onChange={handleChange} />
           </Form.Item>
-          <Form.Item label="Malumot">
-            <Input.TextArea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-            />
-          </Form.Item>
+
           <Form.Item label="Rasm URL">
             <Input
               name="imgUrl"
