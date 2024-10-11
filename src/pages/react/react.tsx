@@ -3,7 +3,7 @@ import { Button, Input, Drawer, Form, message } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
 import axios from "axios";
-import MonacoEditor from "@monaco-editor/react"; // Monaco Editor importi
+import MonacoEditor from "@monaco-editor/react"; // Monaco Editor import
 import "../../App.css";
 import remove from "../remove.png";
 
@@ -15,10 +15,9 @@ interface SubmittedData {
   kod?: string;
   eslatma?: string;
   eslatmaFayl?: string;
-  userName?: string; // Foydalanuvchi nomi
 }
 
-function ReactPage() {
+function All() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -33,8 +32,6 @@ function ReactPage() {
   const [loading, setLoading] = useState(false);
   const [noData, setNoData] = useState(false);
   const dataContainerRef = useRef<HTMLDivElement>(null);
-
-  const userName = localStorage.getItem("name") || "Anonim"; // Foydalanuvchi ismini olish
 
   const showDrawer = () => {
     setOpenDrawer(true);
@@ -57,10 +54,7 @@ function ReactPage() {
       const response = await axios.get<SubmittedData[]>(
         "https://c0adcbfd27d5ecc2.mokky.dev/react"
       );
-      const data = response.data.map((item) => ({
-        ...item,
-        userName: item.userName || "Anonim", // Har bir ma'lumotga foydalanuvchi nomini qo'shish
-      }));
+      const data = response.data;
       const filtered = data.filter(
         (item) =>
           item.name?.toLowerCase().includes(query.toLowerCase()) ||
@@ -86,12 +80,40 @@ function ReactPage() {
     }
   }, [filteredData]);
 
+  const formatDescription = (description?: string) => {
+    if (typeof description !== "string") return "No description available"; // Agar description string bo'lmasa
+
+    const regex = /\*(.*?)\*/g; // Yulduzchalar orasidagi matnni qidirish
+    const parts = description.split(regex); // Matnni qismlarga bo'lish
+
+    return parts.map((part, index) => {
+      if (index % 2 === 1) {
+        // Agar indeks juft bo'lmasa, bu qism yulduzchalar orasida
+        return (
+          <span
+            key={index}
+            style={{
+              marginLeft: "5px",
+              marginRight: "5px",
+              backgroundColor: "black",
+              borderRadius: "5px",
+              color: "red",
+              padding: "4px",
+            }}
+          >
+            {part}
+          </span>
+        );
+      }
+      return part; // Oddiy matnni qaytarish
+    });
+  };
+
   const handleSubmit = async () => {
     try {
-      const newEntry = { ...formData, userName }; // Yangi ma'lumotga foydalanuvchi nomini qo'shish
       const response = await axios.post<SubmittedData>(
         "https://c0adcbfd27d5ecc2.mokky.dev/react",
-        newEntry
+        formData
       );
 
       setFilteredData((prevData) => [...prevData, response.data]);
@@ -112,12 +134,7 @@ function ReactPage() {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "#0e1212",
-        color: "white",
-      }}
-    >
+    <div style={{ backgroundColor: "#0e1212", color: "white" }}>
       <div
         style={{
           width: "100%",
@@ -206,18 +223,8 @@ function ReactPage() {
         {loading ? (
           <p>Yuklanmoqda...</p>
         ) : noData ? (
-          <div
-            style={{
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                textAlign: "center",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
+          <div style={{ textAlign: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center" }}>
               <img src={remove} alt="" />
             </div>
             <Button
@@ -237,7 +244,7 @@ function ReactPage() {
               </h3>
               <p className="data-description">
                 <span className="spands">Malumot : </span>
-                {item.description}
+                {formatDescription(item.description)}
               </p>
 
               <div
@@ -266,11 +273,10 @@ function ReactPage() {
               {item.kod && (
                 <div className="data-code-container">
                   <MonacoEditor
-                    height="200px" // Balandlikni oshirish
-                    language="javascript" // Yozayotgan kodingiz tili
+                    height="200px"
+                    language="javascript"
                     value={item.kod}
                     options={{ theme: "vs-dark", minimap: { enabled: false } }}
-                    // Kodni o'qish uchun
                     onChange={(value) => {}}
                   />
                 </div>
@@ -293,40 +299,53 @@ function ReactPage() {
         }
       >
         <Form layout="vertical">
-          <Form.Item label="Nomi">
-            <Input name="name" value={formData.name} onChange={handleChange} />
+          <Form.Item label="Name">
+            <Input
+              name="name"
+              placeholder="Nomi"
+              value={formData.name}
+              onChange={handleChange}
+            />
           </Form.Item>
-          <Form.Item label="Malumot">
+
+          <Form.Item label="Description">
             <Input.TextArea
               name="description"
+              rows={4}
+              placeholder="Tavsif"
               value={formData.description}
               onChange={handleChange}
             />
           </Form.Item>
-          <Form.Item label="Rasm URL">
+
+          <Form.Item label="Image URL">
             <Input
               name="imgUrl"
+              placeholder="Rasm URL"
               value={formData.imgUrl}
               onChange={handleChange}
             />
           </Form.Item>
+
           <Form.Item label="Eslatma">
             <Input.TextArea
               name="eslatma"
+              rows={4}
+              placeholder="Eslatma"
               value={formData.eslatma}
               onChange={handleChange}
             />
           </Form.Item>
+
           <Form.Item label="Kod">
             <MonacoEditor
-              height="200px" // Balandlikni oshirish
-              language="javascript" // Yozayotgan kodingiz tili
+              height="200px"
+              language="javascript"
               value={formData.kod}
-              options={{ theme: "vs-dark", minimap: { enabled: false } }}
-              onChange={
-                (value) =>
-                  setFormData((prev) => ({ ...prev, kod: value || "" })) // value uchun "" qiymatini o'rnatish
+              onChange={(value) =>
+                setFormData((prevData) => ({ ...prevData, kod: value || "" }))
               }
+              options={{ theme: "vs-dark", minimap: { enabled: false } }}
             />
           </Form.Item>
         </Form>
@@ -335,4 +354,4 @@ function ReactPage() {
   );
 }
 
-export default ReactPage;
+export default All;

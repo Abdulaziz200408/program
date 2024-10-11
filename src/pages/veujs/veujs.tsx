@@ -17,7 +17,7 @@ interface SubmittedData {
   eslatmaFayl?: string;
 }
 
-function VuejsPage() {
+function All() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -80,6 +80,35 @@ function VuejsPage() {
     }
   }, [filteredData]);
 
+  const formatDescription = (description?: string) => {
+    if (typeof description !== "string") return "No description available"; // Agar description string bo'lmasa
+
+    const regex = /\*(.*?)\*/g; // Yulduzchalar orasidagi matnni qidirish
+    const parts = description.split(regex); // Matnni qismlarga bo'lish
+
+    return parts.map((part, index) => {
+      if (index % 2 === 1) {
+        // Agar indeks juft bo'lmasa, bu qism yulduzchalar orasida
+        return (
+          <span
+            key={index}
+            style={{
+              marginLeft: "5px",
+              marginRight: "5px",
+              backgroundColor: "black",
+              borderRadius: "5px",
+              color: "red",
+              padding: "4px",
+            }}
+          >
+            {part}
+          </span>
+        );
+      }
+      return part; // Oddiy matnni qaytarish
+    });
+  };
+
   const handleSubmit = async () => {
     try {
       const response = await axios.post<SubmittedData>(
@@ -105,12 +134,7 @@ function VuejsPage() {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "#0e1212",
-        color: "white",
-      }}
-    >
+    <div style={{ backgroundColor: "#0e1212", color: "white" }}>
       <div
         style={{
           width: "100%",
@@ -120,7 +144,7 @@ function VuejsPage() {
           color: "#fff",
           backgroundColor: "rgb(0, 57, 63)",
           paddingBottom: "20px",
-          paddingTop: "10px", // Corrected background color
+          paddingTop: "10px",
         }}
       >
         <div
@@ -199,18 +223,8 @@ function VuejsPage() {
         {loading ? (
           <p>Yuklanmoqda...</p>
         ) : noData ? (
-          <div
-            style={{
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                textAlign: "center",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
+          <div style={{ textAlign: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center" }}>
               <img src={remove} alt="" />
             </div>
             <Button
@@ -230,7 +244,7 @@ function VuejsPage() {
               </h3>
               <p className="data-description">
                 <span className="spands">Malumot : </span>
-                {item.description}
+                {formatDescription(item.description)}
               </p>
 
               <div
@@ -259,11 +273,10 @@ function VuejsPage() {
               {item.kod && (
                 <div className="data-code-container">
                   <MonacoEditor
-                    height="200px" // Balandlikni oshirish
-                    language="javascript" // Yozayotgan kodingiz tili
+                    height="200px"
+                    language="javascript"
                     value={item.kod}
                     options={{ theme: "vs-dark", minimap: { enabled: false } }}
-                    // Kodni o'qish uchun
                     onChange={(value) => {}}
                   />
                 </div>
@@ -341,4 +354,4 @@ function VuejsPage() {
   );
 }
 
-export default VuejsPage;
+export default All;
